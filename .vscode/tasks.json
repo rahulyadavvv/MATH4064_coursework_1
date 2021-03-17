@@ -1,0 +1,35 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: cl.exe build active file",
+			"command": "cl.exe",
+			"args": [
+				"/I",
+				"${workspaceFolder}\\Question_2\\include\\",
+				"/Zi",
+				"/EHsc",
+				"/nologo",
+				"/Fe:",
+				"${workspaceFolder}\\Question_2\\debug\\main.exe", // makes main.exe the place for main
+				"/Fd:",
+				"${workspaceFolder}\\Question_2\\debug\\",
+				"/Fo:",
+				"${workspaceFolder}\\Question_2\\debug\\",
+				"${workspaceFolder}\\Question_2\\*.cpp" //compile all .cpp's
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "compiler: cl.exe"
+		}
+	]
+}
