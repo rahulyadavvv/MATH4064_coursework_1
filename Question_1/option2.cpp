@@ -73,10 +73,12 @@ int main(int argc, char* argv[]){
         }
     }
     
+    //  print vectors for upper diagonal, main diagonal and lower diagonal
     PrintVector(n, u);
     PrintVector(n, d);
     PrintVector(n, l);
 
+    //  deallocate memory for upper diagonal, main diagonal and lower diagonal
     DeallocateVector(l);
     DeallocateVector(u);
     DeallocateVector(d);
