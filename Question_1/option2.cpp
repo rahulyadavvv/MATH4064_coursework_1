@@ -45,27 +45,27 @@ int main(int argc, char* argv[]){
     std::cout << "n << ";
     std::cin >> n;
 
-    //  calculate and store step size in h (not needed)
+    //  calculate and store step size in h 
     double h = length/((double)n);
 
     /* allocate memory for diagonals and assign d = main diagonal, u = upper
     diagonal, l = lower diagonal     */
     double* d = AllocateVector(n);
-    double* u = AllocateVector(n-1);
-    double* l = AllocateVector(n-1);
+    double* u = AllocateVector(n);
+    double* l = AllocateVector(n);
 
     // for loop to generate coefficients
     for (int i = 0; i < n; i++)
     {
         d[i] = 4.0;
-        if (i == n-1) {} else if (i == 0)
+        if (i == 0)
         {
-            l[i] = 1.0;
+            l[i] = 0.0;
             u[i] = 2.0;
-        } else if (i == n-2)
+        } else if (i == n-1)
         {
             l[i] = 2.0;
-            u[i] = 1.0;
+            u[i] = 0.0;
         } else 
         {
             l[i] = 1.0;
@@ -73,9 +73,9 @@ int main(int argc, char* argv[]){
         }
     }
     
-    PrintVector(n-1, u);
+    PrintVector(n, u);
     PrintVector(n, d);
-    PrintVector(n-1, l);
+    PrintVector(n, l);
 
     DeallocateVector(l);
     DeallocateVector(u);
