@@ -66,21 +66,13 @@ double ComputeOneNorm(int noRows, double* x)
     return result;
 }
 
-int main(int argc, char* argv[]){
-
-    const int xvals = 6;
-    double** x = AllocateMatrix(xvals, 2);
-    double* xReal = AllocateVector(2);
-
-    //  set initial x_0 starting value in x
-    x[0][0] = 2.0;
-    x[0][1] = 2.0;
-
-    //  store value for x when F is 0
-    xReal[0] = 1.0;
-    xReal[1] = 1.0;
-
-    for (int i = 0; i < xvals - 1; i++) //stop before last row at x_4
+//  approximate solution using newton-raphson method (only vector length 2)
+double** ComputeNewton(int iterations, double* initialX)
+{
+    double** x = AllocateMatrix(iterations, 2);
+    x[0][0] = initialX[0];
+    x[0][1] = initialX[1];
+    for (int i = 0; i < iterations - 1; i++) //stop before last row at x_4
     {
         //  calculate J(x_i)^(-1)
         double** JxInverse = Inverse2x2(Jacobian(x[i]));
@@ -97,13 +89,33 @@ int main(int argc, char* argv[]){
         DeallocateVector(Fx);
         DeallocateMatrix(2, JxInverse);
     }
+    return x;
+}
+
+int main(int argc, char* argv[]){
+
+    //  set iterations to 6 used in ComputeNewton() to produce x_{0, ... , 5}
+    const int iterations = 6;
+
+    //  initialise initial value of x used in ComputeNewton();
+    double* xInitial = AllocateVector(2);
+    xInitial[0] = 2.0;
+    xInitial[1] = 2.0;
+
+    //  store value for x when F is 0
+    double* xReal = AllocateVector(2);
+    xReal[0] = 1.0;
+    xReal[1] = 1.0;
     
+    //  approximate solution using newton-raphson method 
+    double** x = ComputeNewton(iterations, xInitial);
+
     //  output x_k for k = 0, 1, 2, 3, 4, 5
     std::cout << "x_k for k = 0, 1, 2, 3, 4, 5:" << std::endl;
-    PrintMatrix(xvals, 2, x);
+    PrintMatrix(iterations, 2, x);
 
-    double* error = AllocateVector(xvals);
-    for (int i = 0; i < xvals; i++)
+    double* error = AllocateVector(iterations);
+    for (int i = 0; i < iterations; i++)
     {
         for (int j = 0; j < 2; j++)
         {
@@ -114,9 +126,11 @@ int main(int argc, char* argv[]){
     
     //  output error for k = 0, 1, 2, 3, 4, 5
     std::cout << "error for k = 0, 1, 2, 3, 4, 5:" << std::endl;
-    PrintColVector(xvals, error);
+    PrintColVector(iterations, error);
 
+    //  deallovate all vectors and matrices 
     DeallocateVector(error);
+    DeallocateMatrix(iterations, x);
     DeallocateVector(xReal);
-    DeallocateMatrix(xvals, x);
+    DeallocateVector(xInitial);
 }
