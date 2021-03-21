@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "general.hpp"
 
 //  calculate exact jacobian of F at value x
@@ -110,10 +111,13 @@ int main(int argc, char* argv[]){
     //  approximate solution using newton-raphson method 
     double** x = ComputeNewton(iterations, xInitial);
 
-    //  output x_k for k = 0, 1, 2, 3, 4, 5
-    std::cout << "x_k for k = 0, 1, 2, 3, 4, 5:" << std::endl;
-    PrintMatrix(iterations, 2, x);
+    /*  
+        //output x_k for k = 0, 1, 2, 3, 4, 5
+        std::cout << "x_k for k = 0, 1, 2, 3, 4, 5:" << std::endl;
+        PrintMatrix(iterations, 2, x);  
+    */
 
+    //  calculate error in approximation for each iteration
     double* error = AllocateVector(iterations);
     for (int i = 0; i < iterations; i++)
     {
@@ -125,8 +129,13 @@ int main(int argc, char* argv[]){
     }
     
     //  output error for k = 0, 1, 2, 3, 4, 5
-    std::cout << "error for k = 0, 1, 2, 3, 4, 5:" << std::endl;
-    PrintColVector(iterations, error);
+    std::cout << std::left << std::setw(6) << std::setfill(' ') << "k" <<
+    std::left << std::setw(6) << std::setfill(' ') << "error" << std::endl;
+    for (int i = 0; i < iterations; i++)
+    {
+        std::cout << std::left << std::setw(6) << std::setfill(' ') << i <<
+        std::left << std::setw(6) << std::setfill(' ') << error[i] << std::endl;
+    }
 
     //  deallovate all vectors and matrices 
     DeallocateVector(error);
