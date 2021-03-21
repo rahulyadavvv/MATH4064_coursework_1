@@ -137,3 +137,44 @@ double ComputeTwoNorm(int noRows, double* vector)
     result = sqrt(result);
     return result;
 }
+
+double* MultiplyMatrixVector(int noRows, int noCols, double** pMatrix, double* 
+pVector)
+{
+    double* pResult = AllocateVector(noRows);
+    for (int i = 0; i < noRows; i++)
+        {
+            pResult[i] = 0.0;
+            for (int j = 0; j < noCols; j++)
+            {
+                pResult[i] += pMatrix[i][j]*pVector[j];
+            }
+        }
+    return pResult;
+}
+
+double ComputeOneNorm(int noRows, double* x)
+{
+    double result = 0.0;
+    for (int i = 0; i < noRows; i++)
+    {
+        result += abs(x[i]);
+    }
+    return result;
+}
+
+//  inverse of a 2x2 matrix
+double** Inverse2x2(double** pMatrix)
+{
+    //  calculate determininant
+    double det = 1.0/(pMatrix[0][0]*pMatrix[1][1] - pMatrix[0][1]*pMatrix[1][0]);
+    //  swap a and d then multiply by det
+    double a = pMatrix[0][0];
+    pMatrix[0][0] = det*pMatrix[1][1];
+    pMatrix[1][1] = det*a;
+    //  multiply b and c by -det
+    pMatrix[0][1] = -1.0*det*pMatrix[0][1];
+    pMatrix[1][0] = -1.0*det*pMatrix[1][0];
+
+    return pMatrix;
+}

@@ -16,23 +16,6 @@ double** Jacobian(double* px)
     return solution;
 }
 
-
-//  inverse of a 2x2 matrix
-double** Inverse2x2(double** pMatrix)
-{
-    //  calculate determininant
-    double det = 1.0/(pMatrix[0][0]*pMatrix[1][1] - pMatrix[0][1]*pMatrix[1][0]);
-    //  swap a and d then multiply by det
-    double a = pMatrix[0][0];
-    pMatrix[0][0] = det*pMatrix[1][1];
-    pMatrix[1][1] = det*a;
-    //  multiply b and c by -det
-    pMatrix[0][1] = -1.0*det*pMatrix[0][1];
-    pMatrix[1][0] = -1.0*det*pMatrix[1][0];
-
-    return pMatrix;
-}
-
 //  compute function at x
 double* F(double* px)
 {
@@ -40,31 +23,6 @@ double* F(double* px)
     solution[0] = px[0]*px[0] - px[1];
     solution[1] = px[0]*px[0] + px[1]*px[1] - 2;
     return solution;
-}
-
-double* MultiplyMatrixVector(int noRows, int noCols, double** pMatrix, double* 
-pVector)
-{
-    double* pResult = AllocateVector(noRows);
-    for (int i = 0; i < noRows; i++)
-        {
-            pResult[i] = 0.0;
-            for (int j = 0; j < noCols; j++)
-            {
-                pResult[i] += pMatrix[i][j]*pVector[j];
-            }
-        }
-    return pResult;
-}
-
-double ComputeOneNorm(int noRows, double* x)
-{
-    double result = 0.0;
-    for (int i = 0; i < noRows; i++)
-    {
-        result += abs(x[i]);
-    }
-    return result;
 }
 
 //  approximate solution using newton-raphson method (only vector length 2)
