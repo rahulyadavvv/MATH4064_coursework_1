@@ -2,6 +2,11 @@
 #include <iomanip>
 #include "general.hpp"
 
+//  functions created in this file
+double** Jacobian(double* px);
+double* F(double* px);
+double** ComputeNewton(int iterations, double* initialX);
+
 //  calculate exact jacobian of F at value x
 double** Jacobian(double* px)
 {
@@ -95,7 +100,7 @@ int main(int argc, char* argv[]){
         std::left << std::setw(6) << std::setfill(' ') << error[i] << std::endl;
     }
 
-    //  deallovate all vectors and matrices 
+    //  deallocate all vectors and matrices 
     DeallocateVector(error);
     DeallocateMatrix(iterations, x);
     DeallocateVector(xReal);
