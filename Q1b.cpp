@@ -1,5 +1,6 @@
 #include <iostream>
 #include "TridiagonalSolver.hpp"
+#include "GeneralFunctions.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -36,6 +37,11 @@ int main(int argc, char* argv[])
     rhs[3] = 27;
 
     double* x = SolveTridiagonalSystem(n, lower, diagonal, upper, rhs);
+
+    DeleteVector(lower);
+    DeleteVector(diagonal);
+    DeleteVector(upper);
+    DeleteVector(rhs);
 
     for(int i=0; i<n; i++)
     {

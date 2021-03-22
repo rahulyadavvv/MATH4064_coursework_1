@@ -1,10 +1,4 @@
-double* Vector(int length)
-{
-    double* vector;
-    vector = new double[length];
-
-    return vector;
-}
+#include "GeneralFunctions.hpp"
 
 double* SolveTridiagonalSystem(int n, double* lower, double* diagonal, double* upper, double* rhs)
 {

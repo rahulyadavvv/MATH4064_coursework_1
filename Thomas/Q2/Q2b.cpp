@@ -1,9 +1,8 @@
 #include <iostream>
 #include <cmath>
 #include "JacobianApproximator.hpp"
+#include "GeneralFunctions.hpp"
 
-double F_1(double x, double y);
-double F_2(double x, double y);
 double* F(double* x);
 double ComputeMatrix1Norm(double** x, double** y,int n);
 
@@ -15,26 +14,16 @@ int main(int argc, char* argv[])
     x[0] = 2;
     x[1] = 2;
 
-    double e = 0.2;
+    double epsilon = 0.2;
 
-    double** Jac = ApproximateJacobian(x, F_1, F_2, e, 2);
+    double** Jacobian = ComputeApproximateJacobian(x, F, 2, epsilon);
 
-    std::cout << Jac[0][0] << " " << Jac[0][1] << std::endl;
-    std::cout << Jac[1][0] << " " << Jac[1][1] << std::endl;
-
-    std::cout << std::endl;
-
-    double** Jaco = ComputeApproximateJacobian(x, F, 2, e);
-
-    std::cout << Jaco[0][0] << " " << Jaco[0][1] << std::endl;
-    std::cout << Jaco[1][0] << " " << Jaco[1][1] << std::endl;
+    std::cout << Jacobian[0][0] << " " << Jacobian[0][1] << std::endl;
+    std::cout << Jacobian[1][0] << " " << Jacobian[1][1] << std::endl;
 
     std::cout << std::endl;
 
-    double** iJac = ApproximateJacobianInverse(x, F_1, F_2, e, 2);
-
-    std::cout << iJac[0][0] << " " << iJac[0][1] << std::endl;
-    std::cout << iJac[1][0] << " " << iJac[1][1] << std::endl;
+    DeleteMatrix(Jacobian, 2);
 
     double** ActualJacobian;
     ActualJacobian = new double*[2];
@@ -51,20 +40,11 @@ int main(int argc, char* argv[])
     std::cout << "epsilon" << "  " << "error" << std::endl;
     for(int i=0; i<6; i++)
     {
-        std::cout << 0.2/pow(2,i) << "  " << ComputeMatrix1Norm(ActualJacobian, ApproximateJacobian(x, F_1, F_2, 0.2/pow(2,i), 2), 2) << std::endl;
+        std::cout << 0.2/pow(2,i) << "  " << ComputeMatrix1Norm(ActualJacobian, 
+                ComputeApproximateJacobian(x, F, 2, 0.2/pow(2,i)), 2) << std::endl;
     }
-
+    
     return 0;
-}
-
-double F_1(double x, double y)
-{
-    return pow(x,2)-y;
-}
-
-double F_2(double x, double y)
-{
-    return pow(x,2)+pow(y,2)-2;
 }
 
 double* F(double* x)

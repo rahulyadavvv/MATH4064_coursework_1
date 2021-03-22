@@ -1,35 +1,4 @@
-double** Matrix(int n)
-{
-    double** matrix;
-    matrix = new double*[n];
-    for(int i=0; i<n; i++)
-    {
-        matrix[i] = new double[n];
-    }
-
-    return matrix;
-}
-
-void DeleteMatrix(double** matrix, int n)
-{
-    for(int i=0; i<n; i++)
-    {
-        delete matrix[i];
-    }
-    delete matrix;
-}
-
-double* Vector(int length)
-{
-    double* vector;
-    vector = new double[length];
-    return vector;
-}
-
-void DeleteVector(double* vector)
-{
-    delete vector;
-}
+#include "GeneralFunctions.hpp"
 
 double** ApproximateJacobian(double* vector, double (*pF1)(double x, double y), 
                     double (*pF2)(double x, double y), double epsilon, int n)
@@ -91,4 +60,40 @@ double** ComputeApproximateJacobian(double* x, double* (*pF)(double* x), int n,
     DeleteVector(save);
 
     return Jacobian;
+}
+
+double** ComputeApproximateJacobianInverse(double* x, double* (*pF)(double* x), double epsilon, int n)
+{
+    double** Jacobian = ComputeApproximateJacobian(x, pF, n, epsilon);
+
+    double det;
+
+    det = Jacobian[0][0]*Jacobian[1][1] - Jacobian[1][0]*Jacobian[0][1];
+
+    double** inverseJacobian = Matrix(n);  // Set up inverse jacobian matrix
+
+    inverseJacobian[0][0] = (1/det)*Jacobian[1][1];
+    inverseJacobian[1][0] = -(1/det)*Jacobian[1][0];
+    inverseJacobian[0][1] = -(1/det)*Jacobian[0][1];
+    inverseJacobian[1][1] = (1/det)*Jacobian[0][0];
+
+    DeleteMatrix(Jacobian, n);
+
+    return inverseJacobian;
+}
+
+void ComputeApproximateJacobianInverse(double** matrix, double* x, double* (*pF)(double* x), double epsilon, int n)
+{
+    double** Jacobian = ComputeApproximateJacobian(x, pF, n, epsilon);
+
+    double det;
+
+    det = Jacobian[0][0]*Jacobian[1][1] - Jacobian[1][0]*Jacobian[0][1];
+
+    matrix[0][0] = (1/det)*Jacobian[1][1];
+    matrix[1][0] = -(1/det)*Jacobian[1][0];
+    matrix[0][1] = -(1/det)*Jacobian[0][1];
+    matrix[1][1] = (1/det)*Jacobian[0][0];
+
+    DeleteMatrix(Jacobian, n);
 }
