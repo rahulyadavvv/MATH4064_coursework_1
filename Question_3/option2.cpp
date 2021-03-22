@@ -34,16 +34,23 @@ double** Jacobian(double stepLength, double* px)
 double* ComputeNewton(int iterations, double stepLength, double* initialX)
 {
     double* x = AllocateVector(2);
+    double* xPrevious = AllocateVector(2);
     x[0] = initialX[0];
     x[1] = initialX[1];
+    xPrevious[0] = x[0];
+    xPrevious[1] = x[1];
     for (int i = 0; i < iterations; i++)
     {
         //  calculate J(x_i)^(-1)
         double** JxInverse = Inverse2x2(Jacobian(stepLength, x));
         //  calculate value of F at x_i
-        double* Fx = F(x);
+        double* Fx = F(stepLength, x, xPrevious);
         //  calculate J(x_i)^(-1)*F(x_i)
         double* product = MultiplyMatrixVector(2, 2, JxInverse, Fx);
+
+        //  store previous value for F in next iteration
+        xPrevious[0] = x[0];
+        xPrevious[1] = x[1];
 
         //  calculate x_(i+1) = x_i  - J(x_i)^(-1)*F(x_i)
         x[0] -= product[0];
@@ -53,6 +60,7 @@ double* ComputeNewton(int iterations, double stepLength, double* initialX)
         DeallocateVector(Fx);
         DeallocateMatrix(2, JxInverse);
     }
+    DeallocateVector(xPrevious);
     return x;
 }
 
