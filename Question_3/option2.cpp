@@ -1,19 +1,19 @@
 #include <iostream>
+#include <cmath>
 #include "general.hpp"
 
 //  functions created in this file
-double* F(double* y);
+double* F(double stepLength, double* y, double* yN);
 double** Jacobian(double stepLength, double* px);
 double* ComputeNewton(int iterations, double stepLength, double* initialX);
 double* BackwardEulerStep(double stepLength, double* y, double* (*f)(int,
 double, double*), int kIterations);
 
-////////////// NEED TO COMPLETE
-double* F(double* y)
+double* F(double stepLength, double* y, double* yN)
 {
     double* solution = AllocateVector(2);
-    solution[0] = 
-    solution[1] = 
+    solution[0] = y[0] - yN[0] - (-3.0*pow(y[0], 2), 2.0*y[1] + 1);
+    solution[1] = y[1] - yN[1] - (-3.0*pow(y[1], 2), 2.0*y[0] + 1);
     return solution;
 }
 
@@ -30,6 +30,7 @@ double** Jacobian(double stepLength, double* px)
     return solution;
 }
 
+//  edit to use previous x thats needed in F
 double* ComputeNewton(int iterations, double stepLength, double* initialX)
 {
     double* x = AllocateVector(2);
