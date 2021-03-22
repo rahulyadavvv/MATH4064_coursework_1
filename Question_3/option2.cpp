@@ -14,8 +14,8 @@ kIterations, double* yInitial);
 double* F(double stepLength, double* y, double* yN)
 {
     double* solution = AllocateVector(2);
-    solution[0] = y[0] - yN[0] - (-3.0*pow(y[0], 2), 2.0*y[1] + 1);
-    solution[1] = y[1] - yN[1] - (-3.0*pow(y[1], 2), 2.0*y[0] + 1);
+    solution[0] = y[0] - yN[0] - stepLength*(-3.0*pow(y[0], 2), 2.0*y[1] + 1);
+    solution[1] = y[1] - yN[1] - stepLength*(-3.0*pow(y[1], 2), 2.0*y[0] + 1);
     return solution;
 }
 
@@ -23,6 +23,7 @@ double** ExactInverseJacobian(double stepLength, double* px)
 {
     //create 2x2 matrix
     double** solution = AllocateMatrix(2,2);
+
     //exact soltion for part inverse jacobian
     double det = 1.0/(1 + 6*stepLength*(px[0] + px[1]) +
     pow(stepLength, 2)*(36.0*px[0]*px[1] - 4));
@@ -30,6 +31,7 @@ double** ExactInverseJacobian(double stepLength, double* px)
     solution[0][1] = det*(2.0*stepLength);
     solution[1][0] = det*(2.0*stepLength);
     solution[1][1] = det*(1.0 + 6.0*stepLength*px[0]);
+
     return solution;
 }
 
@@ -72,6 +74,7 @@ double* BackwardEulerStep(double stepLength, double* y, double* (*f)(int,
 double, double*), int kIterations)
 {
     double* newY = f(kIterations, stepLength, y);
+    //  i don't think this part is right   
     //newY[0] = y[0] + stepLength*newY[0];
     //newY[1] = y[1] + stepLength*newY[1];
     return newY;
@@ -97,7 +100,9 @@ int main(int argc, char* argv[]){
     double* yInitial = AllocateVector(2);
     yInitial[0] = 2.0;
     yInitial[1] = 1.0;
-    double* approximation = ApproximateBackwardEuler(1.0/12.0, 1, 10, yInitial);
+    double h = 1.0/12.0;
+    double* approximation = ApproximateBackwardEuler(h, 1, 5, yInitial);
+
     PrintColVector(2, approximation);
     DeallocateVector(approximation);
     DeallocateVector(yInitial);
