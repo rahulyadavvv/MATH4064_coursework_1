@@ -14,8 +14,8 @@ kIterations, double* yInitial);
 double* F(double stepLength, double* y, double* yN)
 {
     double* solution = AllocateVector(2);
-    solution[0] = y[0] - yN[0] - stepLength*(-3.0*pow(y[0], 2), 2.0*y[1] + 1);
-    solution[1] = y[1] - yN[1] - stepLength*(-3.0*pow(y[1], 2), 2.0*y[0] + 1);
+    solution[0] = y[0] - yN[0] - stepLength*(-3.0*pow(y[0], 2) + 2.0*y[1] + 1);
+    solution[1] = y[1] - yN[1] - stepLength*(-3.0*pow(y[1], 2) + 2.0*y[0] + 1);
     return solution;
 }
 
@@ -101,7 +101,7 @@ int main(int argc, char* argv[]){
     yInitial[0] = 2.0;
     yInitial[1] = 1.0;
     double h = 1.0/12.0;
-    double* approximation = ApproximateBackwardEuler(h, 1, 5, yInitial);
+    double* approximation = ApproximateBackwardEuler(h, 1, 15, yInitial);
 
     PrintColVector(2, approximation);
     DeallocateVector(approximation);
