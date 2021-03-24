@@ -161,7 +161,7 @@ int main(int argc, char* argv[]){
 
     //  output == false --> output error for n
     approximation = ApproximateBackwardEuler(h, 24, 1, yInitial, false);
-    //   code used to output first table contained in ApproximateBackwardEuler  
+    //   code used to output second table contained in ApproximateBackwardEuler  
     DeallocateVector(approximation);
 
     DeallocateVector(yInitial);
