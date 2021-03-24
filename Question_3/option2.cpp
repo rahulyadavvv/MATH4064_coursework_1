@@ -104,8 +104,11 @@ double* ApproximateBackwardEuler(double stepLength, int iterations, int
 kIterations, double* yInitial, bool output)
 {
     double* solution = AllocateVector(2);
+    double* exactSolution = AllocateVector(2);
     solution[0] = yInitial[0];
     solution[1] = yInitial[1];
+    exactSolution[0] = 1.0;
+    exactSolution[1] = 1.0;
 
     //  output for header and first row in second table
     if (!output)
@@ -119,7 +122,7 @@ kIterations, double* yInitial, bool output)
         std::left << std::setw(20) << std::setfill(' ') << solution[0] << 
         std::left << std::setw(20) << std::setfill(' ') << solution[1] << 
         std::left << std::setw(20) << std::setfill(' ') 
-        << ComputeError(solution, yInitial) << std::endl;
+        << ComputeError(solution, exactSolution) << std::endl;
     }
     
     for (int i = 0; i < iterations; i++)
@@ -133,10 +136,11 @@ kIterations, double* yInitial, bool output)
             std::left << std::setw(20) << std::setfill(' ') << solution[0] << 
             std::left << std::setw(20) << std::setfill(' ') << solution[1] << 
             std::left << std::setw(20) << std::setfill(' ') 
-            << ComputeError(solution, yInitial) << std::endl;
+            << ComputeError(solution, exactSolution) << std::endl;
         }
         
     }
+    DeallocateVector(exactSolution);
     return solution;
 }
 
@@ -145,6 +149,7 @@ int main(int argc, char* argv[]){
     double* yInitial = AllocateVector(2);
     yInitial[0] = 2.0;
     yInitial[1] = 1.0;
+    
     double h = 1.0/12.0;
     //  output == true -->  output newton for each k
     bool output = true;
@@ -155,7 +160,7 @@ int main(int argc, char* argv[]){
     std::cout << std::endl;
 
     //  output == false --> output error for n
-    approximation = ApproximateBackwardEuler(h, 24, 5, yInitial, false);
+    approximation = ApproximateBackwardEuler(h, 24, 1, yInitial, false);
     //   code used to output first table contained in ApproximateBackwardEuler  
     DeallocateVector(approximation);
 
