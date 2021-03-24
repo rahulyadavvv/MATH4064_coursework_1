@@ -8,6 +8,7 @@ void F(double stepLength, double* y, double* yN, double* solution);
 void ExactInverseJacobian(double stepLength, double* pX, double** solution);
 void ComputeNewton(int iterations, double stepLength, double* pX, 
 bool produceOutput);
+double ComputeError(double* approximation, double* exact);
 double* ApproximateBackwardEuler(double stepLength, int iterations, int 
 kIterations, double* yInitial, bool output);
 
@@ -88,6 +89,16 @@ bool produceOutput)
     DeallocateVector(xPrevious);
 }
 
+double ComputeError(double* approximation, double* exact)
+{
+    double* difference = AllocateVector(2);
+    difference[0] = approximation[0] - exact[0];
+    difference[1] = approximation[1] - exact[1];
+    double result = ComputeTwoNorm(2, difference);
+    DeallocateVector(difference);
+    return result;
+}
+
 //  the Backward Euler method
 double* ApproximateBackwardEuler(double stepLength, int iterations, int 
 kIterations, double* yInitial, bool output)
@@ -96,6 +107,7 @@ kIterations, double* yInitial, bool output)
     solution[0] = yInitial[0];
     solution[1] = yInitial[1];
 
+    //  output for header and first row in second table
     if (!output)
     {
         std::cout << std::left << std::setw(20) << std::setfill(' ') << "n" <<
@@ -103,11 +115,27 @@ kIterations, double* yInitial, bool output)
         std::left << std::setw(20) << std::setfill(' ') << "y_{2, n}" << 
         std::left << std::setw(20) << std::setfill(' ') << "||y_n - y*||_2" 
         << std::endl;
+        std::cout << std::left << std::setw(20) << std::setfill(' ') << 0 <<
+        std::left << std::setw(20) << std::setfill(' ') << solution[0] << 
+        std::left << std::setw(20) << std::setfill(' ') << solution[1] << 
+        std::left << std::setw(20) << std::setfill(' ') 
+        << ComputeError(solution, yInitial) << std::endl;
     }
     
     for (int i = 0; i < iterations; i++)
-    {
+    {  
         ComputeNewton(kIterations, stepLength, solution, output);
+
+        //  output for rows in second table
+        if (!output)
+        {
+            std::cout << std::left << std::setw(20) << std::setfill(' ') << i + 1 <<
+            std::left << std::setw(20) << std::setfill(' ') << solution[0] << 
+            std::left << std::setw(20) << std::setfill(' ') << solution[1] << 
+            std::left << std::setw(20) << std::setfill(' ') 
+            << ComputeError(solution, yInitial) << std::endl;
+        }
+        
     }
     return solution;
 }
@@ -121,12 +149,15 @@ int main(int argc, char* argv[]){
     //  output == true -->  output newton for each k
     bool output = true;
     double* approximation = ApproximateBackwardEuler(h, 1, 6, yInitial, output);
-    /*   code for table output contained in Computenewton   */
+    //   code used to output first table contained in ComputeNewton()
     DeallocateVector(approximation);
 
+    std::cout << std::endl;
+
     //  output == false --> output error for n
-    //approximation = ApproximateBackwardEuler(h, 25, 5, yInitial, false);
-    //DeallocateVector(approximation);
+    approximation = ApproximateBackwardEuler(h, 24, 5, yInitial, false);
+    //   code used to output first table contained in ApproximateBackwardEuler  
+    DeallocateVector(approximation);
 
     DeallocateVector(yInitial);
 }
