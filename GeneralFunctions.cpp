@@ -7,7 +7,7 @@ double* Vector(int length)
 
 void DeleteVector(double* vector)
 {
-    delete vector;
+    delete[] vector;
 }
 
 double** Matrix(int n)
@@ -25,7 +25,7 @@ void DeleteMatrix(double** matrix, int n)
 {
     for(int i=0; i<n; i++)
     {
-        delete matrix[i];
+        delete[] matrix[i];
     }
-    delete matrix;
+    delete[] matrix;
 }
