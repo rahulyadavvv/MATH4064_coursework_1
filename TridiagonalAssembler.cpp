@@ -51,17 +51,17 @@ double* AssembleRHS(int noSubIntervals, double intervalLength, double (*pFunctio
 
     for(int i=0; i<noSubIntervals+1; i++)
     {
-        grid[i] = i*subintervalLength;
+        grid[i] = (double)(i)*subintervalLength;
     }
 
-    rhs[0] = (*pFunction)(grid[0]) + (subintervalLength/3)*(*pDerivativeFunction)(grid[0]);
+    rhs[0] = (*pFunction)(grid[0]) + (subintervalLength/(double)3)*(*pDerivativeFunction)(grid[0]);
 
     for(int i=1; i<noSubIntervals; i++)
     {
         rhs[i] = (*pFunction)(grid[i]);
     }
 
-    rhs[noSubIntervals] = (*pFunction)(grid[noSubIntervals]) - (subintervalLength/3)*(*pDerivativeFunction)(grid[noSubIntervals]);
+    rhs[noSubIntervals] = (*pFunction)(grid[noSubIntervals]) - (subintervalLength/(double)3)*(*pDerivativeFunction)(grid[noSubIntervals]);
 
     DeleteVector(grid);
 
