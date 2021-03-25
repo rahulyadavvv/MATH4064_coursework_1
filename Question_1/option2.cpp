@@ -85,7 +85,8 @@ int main(int argc, char* argv[]){
     PrintRowVector(n, l);
     std::cout << "right-hand side:";
     PrintRowVector(n, rhs);
-    std::cout << "note: not RHS from Q1, it's the RHS generated using f(x) = x";
+    std::cout << "note: not RHS from Q1, it's the RHS generated using f(x) = x"
+    << std::endl;
 
     //  deallocate memory for upper diagonal, main diagonal and lower diagonal
     DeallocateVector(l);
