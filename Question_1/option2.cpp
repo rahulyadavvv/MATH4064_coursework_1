@@ -96,6 +96,7 @@ int main(int argc, char* argv[]){
     << std::endl;
 
     //  deallocate memory for upper diagonal, main diagonal and lower diagonal
+    DeallocateVector(rhs);
     DeallocateVector(l);
     DeallocateVector(u);
     DeallocateVector(d);
