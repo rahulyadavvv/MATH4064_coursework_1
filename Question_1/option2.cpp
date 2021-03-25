@@ -1,6 +1,14 @@
 #include <iostream>
 #include "general.hpp"
 
+//  functions created in this file
+double* InitialiseMainDiagonal(int length);
+double* InitialiseLowerDiagonal(int length);
+double* InitialiseUpperDiagonal(int length);
+double* InitialiseRHS(int noSteps, double intervalLength, 
+double (*pFunction)(double), double (*pFunctionDerivative)(double));
+
+
 double* InitialiseMainDiagonal(int length)
 {
     length++;
@@ -41,8 +49,7 @@ double* InitialiseUpperDiagonal(int length)
 }
 
 double* InitialiseRHS(int noSteps, double intervalLength, 
-double (*pFunction)(double), double (*pFunctionDerivative)(double)
-)
+double (*pFunction)(double), double (*pFunctionDerivative)(double))
 {
     double h = intervalLength/((double)noSteps);
 
